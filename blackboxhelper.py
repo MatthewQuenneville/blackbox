@@ -172,7 +172,6 @@ def plotFit(fit,points,fmax,fname):
 
     bounds = bb.getBox(points[:,:-1])
     extent = [y for x in bounds for y in x]
-
     d = len(points[0]) - 1
 
     fitImage = numpy.zeros((200,200))
@@ -198,8 +197,9 @@ def plotFit(fit,points,fmax,fname):
     levels = [(numpy.min(fitImage) + l / fmax) for l in confLevels]
 
     plt.close()
-    plt.imshow(numpy.flipud(fitImage),extent=[0.,1.,0.,1.,],vmin=numpy.min(fitImage), vmax=numpy.min(fitImage) + 40./fmax)
-    plt.contour(numpy.linspace(0.,1.,num=200),numpy.linspace(0.,1.,num=200), fitImage,levels=levels,colors='r')
+    plt.imshow(numpy.flipud(fitImage),extent=extent,vmin=numpy.min(fitImage), vmax=numpy.min(fitImage) + 40./fmax,aspect='auto')
+    plt.contour(numpy.linspace(extent[0],extent[1],num=200),
+                numpy.linspace(extent[2],extent[3],num=200), 
+                fitImage,levels=levels,colors='r')
     plt.scatter(points[:,0],points[:,1])
-
     plt.savefig(fname)
